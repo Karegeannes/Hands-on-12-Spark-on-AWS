@@ -51,6 +51,7 @@ Follow these steps to deploy the pipeline in your own AWS account.
 Create two S3 buckets with globally unique names:
 * `handsonfinallanding`: This is where you will upload your raw data.
 * `handsonfinalprocessed`: This is where the processed data and query results will be stored.
+<img width="1501" height="861" alt="2" src="https://github.com/user-attachments/assets/233e5ca7-a275-4dc0-82f4-a47a1066f291" />
 
 ### 3. Create IAM Role for AWS Glue
 Your Glue job needs permission to read from and write to S3.
@@ -61,6 +62,7 @@ Your Glue job needs permission to read from and write to S3.
 4.  Attach the `AWSGlueServiceRole` managed policy.
 5.  Attach the `AmazonS3FullAccess` policy (for this demo) or a more restrictive policy that only grants access to your two buckets.
 6.  Name the role `AWSGlueServiceRole-Reviews` and create it.
+<img width="2253" height="644" alt="3" src="https://github.com/user-attachments/assets/1f1e2098-5d50-46e7-80d3-a99da683934b" />
 
 ### 4. Create the AWS Glue ETL Job
 1.  Go to the **AWS Glue** service.
@@ -71,6 +73,7 @@ Your Glue job needs permission to read from and write to S3.
 6.  Set the **Name** to `process_reviews_job`.
 7.  Select the `AWSGlueServiceRole-Reviews` **IAM Role** you created in the previous step.
 8.  Save the job.
+<img width="1632" height="1009" alt="4" src="https://github.com/user-attachments/assets/2c836de2-4c3d-4a0a-846d-0760592e3189" />
 
 > **Note:** The script is already configured to use the `handsonfinallanding` and `handsonfinalprocessed` buckets.
 
@@ -83,9 +86,11 @@ This function will start the Glue job when a file is uploaded.
 4.  Set the **Runtime** to **Python 3.10** (or any modern Python runtime).
 5.  **Permissions:** Under "Change default execution role," select **Create a new role with basic Lambda permissions**. This role will be automatically named.
 6.  Create the function.
+<img width="740" height="480" alt="5" src="https://github.com/user-attachments/assets/c08790e9-4aad-4e49-ac88-58fe4b5d1440" />
 
 #### 5a. Add Lambda Code
 Paste the contents of `src/lambda_function.py` into the code editor. Make sure the `GLUE_JOB_NAME` variable matches the name of your Glue job (`process_reviews_job`).
+<img width="1396" height="1005" alt="5a" src="https://github.com/user-attachments/assets/9337c9f2-7c14-4d15-924f-77ba50a0c6a4" />
 
 #### 5b. Add Lambda Permissions
 The new Lambda role needs permission to start a Glue job.
@@ -105,6 +110,7 @@ The new Lambda role needs permission to start a Glue job.
     }
     ```
 4.  Name the policy `Allow-Glue-StartJobRun` and save it.
+<img width="1661" height="1435" alt="5b" src="https://github.com/user-attachments/assets/1b8c0971-b2f8-4b6e-88e7-7b15456f925e" />
 
 #### 5c. Add the S3 Trigger
 1.  Go back to your Lambda function's main page.
@@ -113,6 +119,7 @@ The new Lambda role needs permission to start a Glue job.
 4.  Select your `handsonfinallanding` bucket.
 5.  Set the **Event type** to `s3:ObjectCreated:*` (or "All object create events").
 6.  Acknowledge the recursive invocation warning and click **Add**.
+<img width="1355" height="487" alt="5c" src="https://github.com/user-attachments/assets/9436524d-77c8-464e-9eae-265a08e76dc8" />
 
 ---
 
